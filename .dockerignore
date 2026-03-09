@@ -1,0 +1,32 @@
+# Bağımlılıklar (container içinde npm ci ile yüklenecek)
+node_modules
+next-site/node_modules
+
+# Build çıktıları
+.next
+next-site/.next
+out
+
+# Git ve IDE
+.git
+.gitignore
+.cursor
+.vscode
+*.md
+!next-site/README.md
+
+# Geliştirme ve test
+.env*
+*.log
+npm-debug.log*
+.DS_Store
+coverage
+.vercel
+
+# Yerel SQLite (container kendi DB'sini volume'da tutacak)
+next-site/dev.db
+next-site/prisma/dev.db
+
+# Diğer
+*.tsbuildinfo
+next-env.d.ts

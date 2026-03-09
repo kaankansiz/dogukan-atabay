@@ -1,0 +1,17 @@
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3000"
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=file:./data/dev.db
+    volumes:
+      # SQLite veritabanını kalıcı tut (şema /app/prisma'da kalır)
+      - prisma-data:/app/data
+    restart: unless-stopped
+
+volumes:
+  prisma-data:
