@@ -1618,6 +1618,11 @@ main .review-card,
     width: 100%;
 }
 
+.about-instagram-cta {
+    width: 100%;
+    margin-bottom: 24px;
+}
+
 .about-card {
     display: flex;
     align-items: stretch;
@@ -2513,6 +2518,65 @@ main .review-card,
 .contact-section .services-section-header {
     position: relative;
     z-index: 1;
+}
+
+.contact-instagram-cta {
+    width: 100%;
+    margin-bottom: 28px;
+}
+
+/* Sosyal medya çubuğu (gradient Instagram CTA) */
+.social-media-bar {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    width: 100%;
+    padding: 18px 28px;
+    background: linear-gradient(90deg, #f97316 0%, #dc2626 45%, #c026d3 100%);
+    border-radius: var(--border-radius-md);
+    color: #fff;
+    text-decoration: none;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    box-shadow: 0 4px 16px rgba(249, 115, 22, 0.25);
+}
+.social-media-bar:hover {
+    opacity: 0.95;
+    transform: translateY(-1px);
+    color: #fff;
+}
+.social-media-bar-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border: 2px solid rgba(255, 255, 255, 0.9);
+    border-radius: 12px;
+    flex-shrink: 0;
+}
+.social-media-bar-icon svg {
+    width: 24px;
+    height: 24px;
+}
+.social-media-bar-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    flex: 1;
+    min-width: 0;
+}
+.social-media-bar-title {
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+}
+.social-media-bar-desc {
+    font-size: 13px;
+    opacity: 0.95;
+}
+.social-media-bar-arrow {
+    flex-shrink: 0;
+    opacity: 0.9;
 }
 
 .contact-row {

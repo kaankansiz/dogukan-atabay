@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { Breadcrumb } from "@/components/Breadcrumb";
 import { ContactForm } from "@/components/ContactForm";
+import { SocialMediaBar } from "@/components/SocialMediaBar";
 import { SITE_CONFIG } from "@/lib/content";
 import { getBaseUrl, buildBreadcrumbSchema, buildWebPageSchema } from "@/lib/schema";
 
@@ -62,6 +63,9 @@ export default function IletisimPage() {
           </div>
         </div>
         <section className="section contact-section">
+          <div className="contact-instagram-cta">
+            <SocialMediaBar />
+          </div>
           <div className="contact-row">
             <div className="contact-info-col">
               <div className="contact-info-head">

@@ -29,8 +29,45 @@ To learn more about Next.js, take a look at the following resources:
 
 You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-## Deploy on Vercel
+## Yayınlama (Deploy)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Vercel ile (önerilen)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. **Projeyi GitHub’a pushlayın** (henüz yoksa):
+   ```bash
+   git add .
+   git commit -m "Deploy"
+   git push origin main
+   ```
+
+2. **[vercel.com](https://vercel.com)** adresine gidin, “Add New Project” deyin.
+
+3. Repoyu seçin. **Root Directory** olarak **`next-site`** seçin (proje `next-site` klasöründe).
+
+4. “Deploy”e tıklayın. Build otomatik çalışır; bittiğinde site yayında olur.
+
+### Vercel CLI ile
+
+Terminalde proje klasöründeyken:
+
+```bash
+cd next-site
+npm i -g vercel   # veya: npx vercel
+vercel
+```
+
+Giriş / proje seçimi istenirse takip edin. `vercel --prod` ile production’a alırsınız.
+
+### Kendi sunucunuzda
+
+```bash
+cd next-site
+npm run build
+npm run start
+```
+
+`PORT=3000` (veya istediğiniz port) ile çalışır. Bir process manager (pm2, systemd vb.) ile sürekli çalışacak şekilde ayarlayabilirsiniz.
+
+---
+
+[Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) ile tek tıkla deploy edebilirsiniz. [Next.js deployment dokümantasyonu](https://nextjs.org/docs/app/building-your-application/deploying).

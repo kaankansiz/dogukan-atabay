@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { HeroSlider } from "@/components/HeroSlider";
 import { ReviewSlider } from "@/components/ReviewSlider";
+import { SocialMediaBar } from "@/components/SocialMediaBar";
 import { ServiceCard } from "@/components/ServiceCard";
 import { BlogCard } from "@/components/BlogCard";
 import { ContactForm } from "@/components/ContactForm";
@@ -34,6 +35,9 @@ export default function HomePage() {
       </main>
 
       <section className="section about-section" id="hakkimizda">
+        <div className="about-instagram-cta">
+          <SocialMediaBar />
+        </div>
         <div className="card about-card">
           <div className="about-photo-col">
             <div className="about-photo">
@@ -119,6 +123,9 @@ export default function HomePage() {
           <p className="services-section-desc">Randevu ve bilgi için bize ulaşabilirsiniz.</p>
           <div className="services-section-line" aria-hidden="true" />
         </header>
+        <div className="contact-instagram-cta">
+          <SocialMediaBar />
+        </div>
         <div className="contact-row">
           <div className="contact-info-col">
             <div className="contact-info-head">
