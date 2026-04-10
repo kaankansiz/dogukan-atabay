@@ -575,11 +575,27 @@ video {
     box-shadow: 0 0 10px rgba(26, 127, 184, 0.6);
 }
 
-/* Right Column */
+/* Right Column: yorum + nasıl ilerliyoruz + Instagram (3 kart) */
 .right-col {
     display: flex;
     flex-direction: column;
     gap: 24px;
+    min-height: 0;
+    align-self: stretch;
+}
+
+#anasayfa .hero-instagram-cta {
+    flex: 0 0 auto;
+    width: 100%;
+    border-radius: var(--border-radius-lg);
+    overflow: hidden;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+#anasayfa .hero-instagram-cta .social-media-bar {
+    border-radius: 0;
+    box-shadow: none;
 }
 
 .right-col .card {
@@ -615,9 +631,9 @@ video {
 main .review-card,
 .review-card {
     background: #fff !important;
-    height: 300px !important;
-    max-height: 300px !important;
-    min-height: 300px !important;
+    min-height: 260px;
+    height: auto !important;
+    max-height: none !important;
     flex: 0 0 auto !important;
     display: flex;
     flex-direction: column;
@@ -625,6 +641,32 @@ main .review-card,
 
 .review-card .card-header {
     margin-bottom: 14px;
+    gap: 12px;
+    align-items: center;
+}
+
+.review-card .review-card-title {
+    flex: 1 1 0;
+    min-width: 0;
+    white-space: nowrap;
+    line-height: 1.2;
+    margin: 0;
+}
+
+.review-card .review-nav-btns {
+    flex-shrink: 0;
+}
+
+/* Tam yorum metni: kırpma yok */
+.review-card .review-slider {
+    overflow: visible;
+    flex: 1 1 auto;
+    min-height: auto;
+}
+
+.review-card .review-item.active {
+    flex: 0 1 auto;
+    min-height: auto;
 }
 
 .review-nav-btns {
@@ -752,11 +794,7 @@ main .review-card,
     margin-bottom: 14px;
     position: relative;
     z-index: 10;
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    overflow-wrap: break-word;
 }
 
 .rating {
@@ -861,11 +899,7 @@ main .review-card,
     margin-bottom: 14px;
     position: relative;
     z-index: 10;
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    overflow-wrap: break-word;
 }
 
 .rating {
@@ -1616,11 +1650,6 @@ main .review-card,
 /* Hakkımızda - sade, okunaklı */
 .about-section {
     width: 100%;
-}
-
-.about-instagram-cta {
-    width: 100%;
-    margin-bottom: 24px;
 }
 
 .about-card {

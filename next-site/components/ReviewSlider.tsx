@@ -1,7 +1,10 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
+
+const REVIEW_TITLE_MAX_PX = 24;
+const REVIEW_TITLE_MIN_PX = 12;
 
 const REVIEWS = [
   // Eski 10 yorum (önce)
@@ -40,8 +43,30 @@ const REVIEWS = [
 
 export function ReviewSlider() {
   const [current, setCurrent] = useState(0);
+  const titleRef = useRef<HTMLHeadingElement>(null);
 
   const total = REVIEWS.length;
+
+  useLayoutEffect(() => {
+    const el = titleRef.current;
+    const header = el?.parentElement;
+    if (!el || !header) return;
+
+    const fitTitle = () => {
+      let size = REVIEW_TITLE_MAX_PX;
+      el.style.fontSize = `${size}px`;
+      while (el.scrollWidth > el.clientWidth && size > REVIEW_TITLE_MIN_PX) {
+        size -= 0.5;
+        el.style.fontSize = `${size}px`;
+      }
+    };
+
+    fitTitle();
+    const ro = new ResizeObserver(fitTitle);
+    ro.observe(header);
+    return () => ro.disconnect();
+  }, []);
+
   useEffect(() => {
     const t = setInterval(() => setCurrent((c) => (c + 1) % total), 6000);
     return () => clearInterval(t);
@@ -52,7 +77,9 @@ export function ReviewSlider() {
   return (
     <div className="card review-card">
       <div className="card-header">
-        <h2>Hastalarımız Ne Diyor?</h2>
+        <h2 ref={titleRef} className="review-card-title">
+          Hastalarımız Ne Diyor?
+        </h2>
         <div className="review-nav-btns">
           <button type="button" className="review-nav-btn review-prev" id="review-prev" aria-label="Önceki yorum" onClick={() => show(current - 1)}>‹</button>
           <span className="review-counter" id="review-counter">{current + 1}/{total}</span>

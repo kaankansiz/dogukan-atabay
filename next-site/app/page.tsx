@@ -31,13 +31,13 @@ export default function HomePage() {
             </div>
             <div className="feature-image" style={{ backgroundImage: "url('/images/laptop_medical.png'), url('https://images.unsplash.com/photo-1579684385127-1ef15d508118?w=800&q=80')" }} />
           </div>
+          <div className="hero-instagram-cta">
+            <SocialMediaBar />
+          </div>
         </div>
       </main>
 
       <section className="section about-section" id="hakkimizda">
-        <div className="about-instagram-cta">
-          <SocialMediaBar />
-        </div>
         <div className="card about-card">
           <div className="about-photo-col">
             <div className="about-photo">
