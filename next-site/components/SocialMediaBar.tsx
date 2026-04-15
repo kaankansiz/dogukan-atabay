@@ -1,6 +1,11 @@
+"use client";
+
+import { useTranslations } from "next-intl";
 import { SITE_CONFIG } from "@/lib/content";
 
 export function SocialMediaBar() {
+  const t = useTranslations("SocialMediaBar");
+
   return (
     <a
       href={SITE_CONFIG.instagram}
@@ -16,8 +21,8 @@ export function SocialMediaBar() {
         </svg>
       </span>
       <div className="social-media-bar-text">
-        <span className="social-media-bar-title">SOSYAL MEDYA</span>
-        <span className="social-media-bar-desc">Bizi Instagram&apos;dan takip edin</span>
+        <span className="social-media-bar-title">{t("title")}</span>
+        <span className="social-media-bar-desc">{t("desc")}</span>
       </div>
       <span className="social-media-bar-arrow" aria-hidden="true">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

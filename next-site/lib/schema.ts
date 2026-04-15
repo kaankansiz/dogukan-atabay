@@ -4,6 +4,10 @@
  * https://developers.google.com/search/docs/appearance/structured-data
  */
 
+import type { BreadcrumbItem } from "@/components/Breadcrumb";
+import type { AppLocale } from "@/i18n/routing";
+import { localizedUrl } from "@/lib/locale-path";
+
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://dogukanatabay.com";
 
 export function getBaseUrl() {
@@ -109,14 +113,17 @@ export function buildServiceSchema(service: {
   title: string;
   excerpt: string;
   slug: string;
+  /** Full canonical URL including locale prefix when needed */
+  url?: string;
 }) {
   const base = getBaseUrl();
+  const url = service.url ?? `${base}/hizmetler/${service.slug}`;
   return {
     "@context": "https://schema.org",
     "@type": "MedicalProcedure",
     name: service.title,
     description: service.excerpt,
-    url: `${base}/hizmetler/${service.slug}`,
+    url,
     procedureType: "Minimally invasive",
   };
 }
@@ -130,8 +137,11 @@ export function buildArticleSchema(post: {
   image?: string;
   imageAlt?: string;
   category: string;
+  /** Full canonical URL including locale prefix when needed */
+  pageUrl?: string;
 }) {
   const base = getBaseUrl();
+  const pageUrl = post.pageUrl ?? `${base}/blog/${post.slug}`;
   const imageUrl = post.image ? `${base}${post.image}` : `${base}/blog-banner.webp`;
   const months: Record<string, string> = {
     Ocak: "01", Şubat: "02", Mart: "03", Nisan: "04", Mayıs: "05", Haziran: "06",
@@ -146,7 +156,7 @@ export function buildArticleSchema(post: {
     "@type": "Article",
     headline: post.title,
     description: post.excerpt,
-    url: `${base}/blog/${post.slug}`,
+    url: pageUrl,
     image: imageUrl,
     datePublished: isoDate,
     dateModified: isoDate,
@@ -164,14 +174,13 @@ export function buildArticleSchema(post: {
     },
     mainEntityOfPage: {
       "@type": "WebPage",
-      "@id": `${base}/blog/${post.slug}`,
+      "@id": pageUrl,
     },
   };
 }
 
 /** BreadcrumbList – sayfa hiyerarşisi (snippet + AI) */
-export function buildBreadcrumbSchema(items: { label: string; href?: string }[]) {
-  const base = getBaseUrl();
+export function buildBreadcrumbSchema(items: BreadcrumbItem[], locale: AppLocale) {
   return {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
@@ -179,7 +188,7 @@ export function buildBreadcrumbSchema(items: { label: string; href?: string }[])
       "@type": "ListItem",
       position: i + 1,
       name: item.label,
-      ...(item.href ? { item: `${base}${item.href}` } : {}),
+      ...(typeof item.href === "string" ? { item: localizedUrl(item.href, locale) } : {}),
     })),
   };
 }
@@ -189,7 +198,8 @@ export function buildWebPageSchema(config: {
   name: string;
   description: string;
   url: string;
-  breadcrumb?: { label: string; href?: string }[];
+  locale: AppLocale;
+  breadcrumb?: BreadcrumbItem[];
 }) {
   const base = getBaseUrl();
   return {
@@ -206,7 +216,9 @@ export function buildWebPageSchema(config: {
               "@type": "ListItem",
               position: i + 1,
               name: item.label,
-              ...(item.href ? { item: `${base}${item.href}` } : {}),
+              ...(typeof item.href === "string"
+                ? { item: localizedUrl(item.href, config.locale) }
+                : {}),
             })),
           },
         }

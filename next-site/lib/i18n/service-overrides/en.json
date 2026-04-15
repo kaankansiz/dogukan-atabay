@@ -1,0 +1,192 @@
+{
+  "ameliyatsiz-varis-tedavisi": {
+    "title": "Non-surgical varicose vein treatment",
+    "excerpt": "Foam, laser and radiofrequency methods for comfortable, incision-free treatment. Same-day discharge.",
+    "body": [
+      "Varicose veins develop when superficial veins dilate and valves fail, often causing pain, heaviness and cosmetic concerns. Non-surgical treatment closes or shrinks these veins using laser, radiofrequency or foam sclerotherapy without open surgery.",
+      "Colour Doppler ultrasound maps the veins and guides the choice of technique. Large truncal veins are often treated with endovenous laser or radiofrequency; smaller veins and spider veins with foam sclerotherapy.",
+      "Procedures are performed under local anaesthesia or light sedation with ultrasound guidance. Most patients go home the same day. Compression stockings and walking are recommended during recovery.",
+      "Benefits include minimal scarring, faster return to daily activities and good cosmetic outcomes. Follow-up ultrasound confirms closure."
+    ],
+    "faq": [
+      { "q": "Is the procedure painful?", "a": "Local anaesthesia keeps discomfort minimal. Mild soreness or bruising may occur and usually settles with simple pain relief." },
+      { "q": "How long is recovery?", "a": "Many patients are discharged the same day and return to routine activities within a few days, following your doctor’s advice." },
+      { "q": "Can varicose veins recur?", "a": "Treated veins typically remain closed. New veins can develop over time; additional sessions can be planned if needed." }
+    ]
+  },
+  "tiroid-nodul-tedavisi": {
+    "title": "Non-surgical thyroid nodule treatment",
+    "excerpt": "Ultrasound-guided microwave ablation for targeted treatment, usually same-day discharge.",
+    "body": [
+      "Thyroid nodules are lumps within the thyroid. Benign nodules that cause pressure, cosmetic issues or growth can be treated with thermal ablation (microwave or laser) without removing the gland.",
+      "Fine-needle aspiration biopsy is used to confirm benign disease before ablation. The procedure is planned according to nodule size, number and symptoms.",
+      "Under local anaesthesia a thin needle is advanced into the nodule under ultrasound; thermal energy destroys targeted tissue while preserving healthy thyroid.",
+      "Nodules shrink gradually over months. Thyroid function is usually preserved. Follow-up ultrasound monitors the response."
+    ],
+    "faq": [
+      { "q": "Is ablation painful?", "a": "Local anaesthesia makes the procedure tolerable; mild neck discomfort may occur for a few days." },
+      { "q": "Does the nodule disappear completely?", "a": "Most nodules shrink significantly; the goal is symptom relief and halting growth." }
+    ]
+  },
+  "girisimsel-radyoloji": {
+    "title": "Interventional radiology procedures",
+    "excerpt": "Image-guided minimally invasive diagnosis and treatment without open surgery.",
+    "body": [
+      "Interventional radiology uses ultrasound, CT, fluoroscopy or MRI to guide needles and catheters for biopsy, drainage, vascular access and tumour ablation.",
+      "Common procedures include image-guided biopsy, abscess drainage, port placement, varicose vein treatment and thyroid ablation.",
+      "Most interventions use local anaesthesia or sedation; many patients are discharged the same day after a short observation period.",
+      "Benefits include smaller access sites, less pain and quicker recovery compared with traditional open surgery when clinically appropriate."
+    ],
+    "faq": [
+      { "q": "Are procedures safe?", "a": "Image guidance targets the lesion precisely; sterile technique and protocols keep complication rates low." },
+      { "q": "Is general anaesthesia always required?", "a": "Many procedures are done with local anaesthesia; sedation or general anaesthesia is used when needed." }
+    ]
+  },
+  "biyopsi": {
+    "title": "Biopsy procedures",
+    "excerpt": "Breast, thyroid, liver and lung biopsy under ultrasound or CT guidance with minimal discomfort.",
+    "body": [
+      "Biopsy obtains tissue for pathology when imaging shows a suspicious lesion. Image guidance improves accuracy and safety.",
+      "Fine-needle aspiration collects cells; core biopsy obtains small tissue cores for detailed analysis. The approach depends on lesion location and clinical question.",
+      "The procedure usually takes 15–30 minutes with local anaesthesia. Anticoagulants may need temporary adjustment under medical supervision.",
+      "Mild bruising or soreness is common. Results typically return within several working days and guide further management."
+    ],
+    "faq": [
+      { "q": "Should I stop blood thinners?", "a": "Tell your doctor about all medications; some may need to be paused according to a personalised plan." },
+      { "q": "Does biopsy spread cancer?", "a": "Image-guided core and fine-needle techniques have an extremely low risk of seeding and are internationally accepted as safe." }
+    ]
+  },
+  "lazerle-varis-tedavisi": {
+    "title": "Laser varicose vein treatment",
+    "excerpt": "Endovenous laser ablation from inside the vein; short recovery and durable closure.",
+    "body": [
+      "Endovenous laser ablation (EVLA) treats incompetent superficial veins by heating the wall from inside using laser energy delivered through a thin fibre.",
+      "Ultrasound maps the target vein and guides catheter placement. Tumescent fluid around the vein improves comfort and protects surrounding tissues.",
+      "The procedure commonly takes 30–60 minutes; patients usually walk shortly afterwards and go home the same day.",
+      "Compression stockings and regular walking support healing. Follow-up ultrasound confirms successful closure."
+    ],
+    "faq": [
+      { "q": "How long does EVLA take?", "a": "Typically 30–60 minutes depending on vein length and anatomy." },
+      { "q": "Will I need stockings?", "a": "Compression is usually advised for several weeks to optimise outcomes." }
+    ]
+  },
+  "radyofrekansla-varis-tedavisi": {
+    "title": "Radiofrequency varicose vein treatment",
+    "excerpt": "Radiofrequency energy closes incompetent veins under local anaesthesia with same-day mobilisation.",
+    "body": [
+      "Radiofrequency ablation (RFA) heats the vein wall using controlled RF energy delivered through an intravenous catheter, leading to contraction and closure.",
+      "Like laser, RFA is used for truncal incompetence after ultrasound mapping. Choice between laser and RF depends on anatomy and physician preference.",
+      "The session typically lasts 30–60 minutes with local anaesthesia or sedation. Compression and walking are encouraged afterwards.",
+      "Outcomes are comparable to laser for many patients, with excellent long-term closure rates when indicated."
+    ],
+    "faq": [
+      { "q": "Laser or RF—which is better?", "a": "Both aim to close the vein thermally; your specialist will recommend the best option for your anatomy." }
+    ]
+  },
+  "kopuk-skleroterapi": {
+    "title": "Foam sclerotherapy",
+    "excerpt": "Foam injection for reticular and spider veins; incision-free, often walk-in sessions.",
+    "body": [
+      "Foam sclerotherapy mixes sclerosant with gas or air to create microfoam that contacts the vein wall effectively, even for slightly larger superficial veins.",
+      "It is commonly used for spider veins, reticular veins and as an adjunct after endovenous treatment of truncal veins.",
+      "Sessions are short; several treatments spaced weeks apart may be needed. Compression and sun protection help skin healing.",
+      "Side effects are usually mild, such as temporary pigmentation or bruising that fades over time."
+    ],
+    "faq": [
+      { "q": "How many sessions are needed?", "a": "Often 1–4 sessions depending on vein density and size, spaced a few weeks apart." }
+    ]
+  },
+  "4d-gebe-ultrasonu": {
+    "title": "4D pregnancy ultrasound",
+    "excerpt": "Real-time 3D imaging of fetal face and movements for memorable bonding moments.",
+    "body": [
+      "4D ultrasound adds the time dimension to 3D imaging so parents can see fetal movements and facial expressions in near real time.",
+      "The best imaging window is often between 24 and 32 weeks when amniotic fluid and fetal position are favourable.",
+      "Ultrasound does not use ionising radiation and is considered safe for diagnostic doses. Routine 2D scans remain the standard for medical assessment.",
+      "4D is primarily an bonding experience; structural screening is still documented with 2D imaging as indicated."
+    ],
+    "faq": [
+      { "q": "Is 4D ultrasound safe?", "a": "Yes—diagnostic ultrasound uses sound waves, not X-rays, at doses considered safe in guidelines." }
+    ]
+  },
+  "port-takilmasi": {
+    "title": "Port-a-cath placement",
+    "excerpt": "Subcutaneous port for chemotherapy or long-term venous access—comfortable and reliable.",
+    "body": [
+      "A totally implantable venous access port consists of a reservoir under the skin connected to a catheter in a central vein, reducing repeated needle sticks.",
+      "Ports are commonly placed for chemotherapy, long-term antibiotics or parenteral nutrition using imaging guidance.",
+      "The procedure is usually performed under sedation or general anaesthesia with fluoroscopy or ultrasound to confirm catheter tip position.",
+      "After healing, the port is accessed with a Huber needle using sterile technique; periodic flushing helps maintain patency."
+    ],
+    "faq": [
+      { "q": "How long can a port stay in place?", "a": "With proper care, ports may remain for months to years depending on treatment needs." }
+    ]
+  },
+  "kist-abse-drenaji": {
+    "title": "Cyst and abscess drainage",
+    "excerpt": "Ultrasound- or CT-guided drainage for rapid relief of fluid collections.",
+    "body": [
+      "Image-guided drainage uses a needle or catheter to evacuate cyst fluid or abscess pus, avoiding open surgery in selected cases.",
+      "Abscess samples may be sent for culture to guide antibiotics. Some cysts can be sclerosed to reduce recurrence.",
+      "Local anaesthesia is typical; many patients go home the same day or after short observation.",
+      "Follow-up imaging confirms resolution and guides further steps if needed."
+    ],
+    "faq": [
+      { "q": "Can collections recur?", "a": "Proper drainage and antibiotics reduce recurrence; some cysts may need additional treatment." }
+    ]
+  },
+  "bilgisayarli-tomografi": {
+    "title": "Computed tomography (CT)",
+    "excerpt": "Cross-sectional X-ray imaging for detailed evaluation of organs, vessels and bone.",
+    "body": [
+      "CT provides rapid, high-resolution images of the head, chest, abdomen, pelvis and extremities for trauma, infection, tumour work-up and emergency conditions.",
+      "Intravenous contrast can highlight vessels and lesions; kidney function and allergy history are reviewed beforehand.",
+      "Examination times are usually short. Radiation dose is kept as low as reasonably achievable using modern protocols.",
+      "Pregnancy requires special consideration; urgent decisions are made together with your clinician."
+    ],
+    "faq": [
+      { "q": "How long does a CT scan take?", "a": "Often 5–20 minutes depending on the region and whether contrast is used." }
+    ]
+  },
+  "mr-goruntuleme": {
+    "title": "MRI",
+    "excerpt": "Radiation-free detailed imaging of soft tissues, brain, spine and joints.",
+    "body": [
+      "MRI uses magnetic fields and radio waves to create detailed images without ionising radiation, valuable for brain, spine, musculoskeletal and many body applications.",
+      "Some studies use gadolinium-based contrast after renal function assessment. The scanner is noisy; ear protection is provided.",
+      "Metal implants, pacemakers and foreign bodies must be disclosed before scanning—some devices are MRI-conditional.",
+      "Claustrophobia can be managed with communication strategies or mild sedation when appropriate."
+    ],
+    "faq": [
+      { "q": "Does MRI use radiation?", "a": "No—MRI does not use X-rays." },
+      { "q": "Can I have MRI with a pacemaker?", "a": "Only MRI-conditional systems with documented settings are safe; always inform staff before scanning." }
+    ]
+  },
+  "xray-goruntuleme": {
+    "title": "X-ray imaging",
+    "excerpt": "Fast conventional radiography for bones, chest and abdomen.",
+    "body": [
+      "X-ray remains a quick first-line tool for fractures, chest pathology and selected abdominal conditions.",
+      "Metal objects are removed when possible. Pregnancy is discussed to shield or defer non-urgent studies.",
+      "Digital systems allow efficient storage and dose optimisation for children and adults.",
+      "Results are reported by radiologists and correlated with your referring physician’s question."
+    ],
+    "faq": [
+      { "q": "How long does an X-ray take?", "a": "The exposure is seconds; including positioning, the visit usually takes only a few minutes." }
+    ]
+  },
+  "mamografi": {
+    "title": "Mammography and breast imaging",
+    "excerpt": "Breast cancer screening and diagnosis with low-dose X-ray mammography.",
+    "body": [
+      "Mammography compresses the breast briefly to obtain high-quality images and is central to early breast cancer detection.",
+      "Screening intervals depend on age and risk factors; diagnostic mammography evaluates symptoms or abnormal findings.",
+      "Tomosynthesis (3D mammography) can improve conspicuity of lesions in dense tissue. Ultrasound or MRI may supplement selected cases.",
+      "Results use standardised reporting (e.g. BI-RADS) to guide follow-up or biopsy when needed."
+    ],
+    "faq": [
+      { "q": "How often should screening be done?", "a": "Many programmes suggest yearly screening from around age 40; personalised schedules apply for higher risk." },
+      { "q": "Is mammography painful?", "a": "Compression is tight but brief; scheduling after your period may reduce sensitivity." }
+    ]
+  }
+}

@@ -1,25 +1,33 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
-
-const bodySchema = z.object({
-  name: z.string().min(1, "Ad soyad gerekli"),
-  phone: z.string().min(1, "Telefon gerekli"),
-  email: z.string().email().optional().or(z.literal("")),
-  message: z.string().optional(),
-});
+import { contactApiLocale, contactApiMessages } from "@/lib/contact-api-messages";
 
 export async function POST(request: Request) {
+  let localeForErrors = contactApiLocale(undefined);
   try {
-    const raw = await request.json();
+    const raw = (await request.json()) as Record<string, unknown>;
+    const locale = contactApiLocale(raw.locale);
+    localeForErrors = locale;
+    const m = contactApiMessages(locale);
+
+    const bodySchema = z.object({
+      name: z.string().min(1, m.nameRequired),
+      phone: z.string().min(1, m.phoneRequired),
+      email: z.union([z.literal(""), z.string().email({ message: m.emailInvalid })]),
+      message: z.string().optional(),
+    });
+
     const parsed = bodySchema.safeParse({
-      ...raw,
+      name: raw.name,
+      phone: raw.phone,
       email: raw.email || "",
+      message: raw.message,
     });
     if (!parsed.success) {
       return NextResponse.json(
-        { message: parsed.error.issues[0]?.message ?? "Geçersiz veri" },
-        { status: 400 }
+        { message: parsed.error.issues[0]?.message ?? m.invalid },
+        { status: 400 },
       );
     }
     const { name, phone, email, message } = parsed.data;
@@ -35,8 +43,8 @@ export async function POST(request: Request) {
   } catch (e) {
     console.error("Contact API error:", e);
     return NextResponse.json(
-      { message: "Kayıt sırasında bir hata oluştu." },
-      { status: 500 }
+      { message: contactApiMessages(localeForErrors).serverError },
+      { status: 500 },
     );
   }
 }

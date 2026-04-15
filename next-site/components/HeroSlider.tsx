@@ -1,14 +1,17 @@
 "use client";
 
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
 import { useEffect, useRef, useState } from "react";
 import { SITE_CONFIG } from "@/lib/content";
 
-const SLIDES = [
-  { bg: "/assets/varis-tedavisi.png", title: "AMELİYATSIZ VARİS<br>TEDAVİSİ", desc: "Köpük, lazer ve radyofrekans yöntemleri ile ağrısız, kesisiz ve konforlu varis tedavisi. Aynı gün taburcu." },
-  { bg: "/assets/troid.png", title: "AMELİYATSIZ TİROİD<br>NODÜL TEDAVİSİ", desc: "Ultrason eşliğinde mikrodalga ablasyon ile hedef tedavi. Aynı gün taburcu, kesisiz." },
-  { bg: "/assets/radyoloji.png", title: "GİRİŞİMSEL<br>RADYOLOJİ", desc: "Görüntüleme rehberliğinde minimal invaziv tanı ve tedavi. Cerrahiye gerek kalmadan işlemler." },
-  { bg: "/assets/biopsi.png", title: "BİYOPSİ & TANI<br>İŞLEMLERİ", desc: "Meme, tiroid, karaciğer ve akciğer biyopsisi. Ultrason/BT eşliğinde kesin tanı." },
+type Slide = { title: string; desc: string };
+
+const SLIDE_BGS = [
+  "/assets/varis-tedavisi.png",
+  "/assets/troid.png",
+  "/assets/radyoloji.png",
+  "/assets/biopsi.png",
 ];
 
 function pad(n: number) {
@@ -16,20 +19,23 @@ function pad(n: number) {
 }
 
 export function HeroSlider() {
+  const t = useTranslations("Hero");
+  const slides = t.raw("slides") as Slide[];
   const [current, setCurrent] = useState(0);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const n = slides.length;
 
   useEffect(() => {
-    intervalRef.current = setInterval(() => setCurrent((c) => (c + 1) % 4), 5000);
+    intervalRef.current = setInterval(() => setCurrent((c) => (c + 1) % n), 5000);
     return () => {
       if (intervalRef.current) clearInterval(intervalRef.current);
     };
-  }, []);
+  }, [n]);
 
   const goTo = (index: number) => {
-    setCurrent((index + 4) % 4);
+    setCurrent((index + n) % n);
     if (intervalRef.current) clearInterval(intervalRef.current);
-    intervalRef.current = setInterval(() => setCurrent((c) => (c + 1) % 4), 5000);
+    intervalRef.current = setInterval(() => setCurrent((c) => (c + 1) % n), 5000);
   };
 
   return (
@@ -45,18 +51,20 @@ export function HeroSlider() {
         </div>
       </div>
       <div className="hero-slides">
-        {SLIDES.map((s, i) => (
+        {slides.map((s, i) => (
           <div
             key={i}
             className={"hero-slide" + (i === current ? " active" : "")}
             data-slide={i}
-            style={{ backgroundImage: `url('${s.bg}')` }}
+            style={{
+              backgroundImage: `url('${SLIDE_BGS[i] ?? SLIDE_BGS[0]}'), url('https://images.unsplash.com/photo-1579684385127-1ef15d508118?w=800&q=80')`,
+            }}
           >
             <div className="hero-slide-overlay" />
             <div className="hero-card-body">
               <h1 dangerouslySetInnerHTML={{ __html: s.title }} />
               <p>{s.desc}</p>
-              <Link href="/iletisim" className="btn btn-primary btn-hero">İLETİŞİM</Link>
+              <Link href="/iletisim" className="btn btn-primary btn-hero">{t("contactCta")}</Link>
             </div>
           </div>
         ))}
@@ -65,9 +73,18 @@ export function HeroSlider() {
         <div className="pagination">
           <span className="current-slide-num" id="hero-current-num">{pad(current)}</span>
         </div>
-        <div className="slide-bars" id="hero-bars" role="tablist" aria-label="Slayt göstergeleri">
-          {[0, 1, 2, 3].map((i) => (
-            <button key={i} type="button" className={"bar" + (i === current ? " active" : "")} data-slide={i} aria-label={"Slayt " + (i + 1)} aria-selected={i === current} onClick={() => goTo(i)} />
+        <div className="slide-bars" id="hero-bars" role="tablist" aria-label={t("slideTablist")}>
+          {slides.map((_, i) => (
+            <button
+              key={i}
+              type="button"
+              role="tab"
+              className={"bar" + (i === current ? " active" : "")}
+              data-slide={i}
+              aria-label={t("slideN", { n: i + 1 })}
+              aria-selected={i === current}
+              onClick={() => goTo(i)}
+            />
           ))}
         </div>
       </div>

@@ -1,6 +1,8 @@
-import Link from "next/link";
+import type { ComponentProps } from "react";
+import { Link } from "@/i18n/navigation";
 
-type BreadcrumbItem = { label: string; href?: string };
+/** `href` uses next-intl iç pathnames (ör. `/hizmetler`); `Link` dış URL’yi üretir. */
+export type BreadcrumbItem = { label: string; href?: ComponentProps<typeof Link>["href"] };
 
 export function Breadcrumb({ items }: { items: BreadcrumbItem[] }) {
   return (

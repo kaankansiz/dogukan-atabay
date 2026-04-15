@@ -1,34 +1,44 @@
 import { notFound } from "next/navigation";
-import Link from "next/link";
 import Image from "next/image";
+import { hasLocale } from "next-intl";
+import { getTranslations, setRequestLocale } from "next-intl/server";
+import { Link } from "@/i18n/navigation";
 import { Breadcrumb } from "@/components/Breadcrumb";
-import { getBlogPostBySlug, BLOG_POSTS, BLOG_SLUGS } from "@/lib/content";
-import { SITE_CONFIG } from "@/lib/content";
+import { BLOG_SLUGS } from "@/lib/content";
+import { getBlogPostBySlug, getBlogPosts } from "@/lib/content-locale";
+import { getSiteConfig } from "@/lib/site-config";
 import { buildFAQPageSchema, buildArticleSchema, buildBreadcrumbSchema, getBaseUrl } from "@/lib/schema";
+import { routing } from "@/i18n/routing";
+import type { AppLocale } from "@/i18n/routing";
+import { localizedUrl, pageAlternates } from "@/lib/locale-path";
 
-type Props = { params: Promise<{ slug: string }> };
+type Props = { params: Promise<{ locale: string; slug: string }> };
 
-export async function generateStaticParams() {
-  return BLOG_SLUGS.map((slug) => ({ slug }));
+export function generateStaticParams() {
+  return routing.locales.flatMap((locale) => BLOG_SLUGS.map((slug) => ({ locale, slug })));
 }
 
 export async function generateMetadata({ params }: Props) {
-  const { slug } = await params;
-  const post = getBlogPostBySlug(slug);
+  const { slug, locale: loc } = await params;
+  if (!hasLocale(routing.locales, loc)) return { title: "Blog" };
+  const locale = loc as AppLocale;
+  const post = getBlogPostBySlug(slug, locale);
   if (!post) return { title: "Blog" };
   const baseUrl = getBaseUrl();
-  const canonical = `${baseUrl}/blog/${slug}`;
+  const canonical = localizedUrl(`/blog/${slug}`, locale);
   const imageUrl = post.image ? `${baseUrl}${post.image}` : `${baseUrl}/blog-banner.webp`;
+  const ogLocale =
+    locale === "tr" ? "tr_TR" : locale === "en" ? "en_US" : locale === "ar" ? "ar_SA" : "ka_GE";
   return {
     title: post.title,
     description: post.excerpt,
-    alternates: { canonical },
+    alternates: pageAlternates(`/blog/${slug}`, locale),
     openGraph: {
       title: post.title,
       description: post.excerpt,
       url: canonical,
       type: "article",
-      locale: "tr_TR",
+      locale: ogLocale,
       publishedTime: post.date,
       images: [{ url: imageUrl, width: 720, height: 405, alt: post.imageAlt || post.title }],
     },
@@ -37,35 +47,45 @@ export async function generateMetadata({ params }: Props) {
   };
 }
 
-/** Blog SSS: 8 soru, tüm yazılarda aynı (okur / randevu odaklı). */
-const BLOG_FAQS = [
-  { q: "Bu konuda randevu alabilir miyim?", a: "Evet. Yazıda bahsedilen işlemler veya benzer konularda randevu ve bilgi için bizi arayabilir veya iletişim formunu kullanabilirsiniz." },
-  { q: "Yazıdaki bilgiler güncel mi?", a: "Blog yazılarımız genel bilgilendirme amaçlıdır. Kişiye özel tanı ve tedavi için mutlaka muayene ve görüntüleme ile değerlendirme gerekir." },
-  { q: "Randevu nasıl alırım?", a: "Telefon veya WhatsApp ile bize ulaşabilir, iletişim sayfamızdaki formu doldurabilirsiniz. En kısa sürede size dönüş yapılacaktır." },
-  { q: "Ücretler hakkında bilgi alabilir miyim?", a: "İşlem ve muayene ücretleri hakkında randevu sırasında veya öncesi telefon ile detaylı bilgi alabilirsiniz." },
-  { q: "Sigorta anlaşmalarınız var mı?", a: "Kurumumuzun anlaşmalı olduğu sigortalar ve ödeme seçenekleri hakkında iletişim numaramızdan bilgi alabilirsiniz." },
-  { q: "İşlem öncesi hazırlık gerekir mi?", a: "İşleme göre açlık, ilaç kesimi veya başka hazırlıklar gerekebilir. Randevunuzda size özel talimatlar verilecektir." },
-  { q: "Çalışma saatleriniz nedir?", a: "Pazartesi–Cuma 08:00–17:00, Cumartesi 08:00–13:00. Randevu alırken güncel saat bilgisi verilir." },
-  { q: "Nerede hizmet veriyorsunuz?", a: "Kemerkaya, İller Sk. 27-29, İmperial Hastanesi – Ortahisar/Trabzon adresinde hizmet vermekteyiz." },
-];
-
 export default async function BlogDetailPage({ params }: Props) {
-  const { slug } = await params;
-  const post = getBlogPostBySlug(slug);
+  const { slug, locale: loc } = await params;
+  if (!hasLocale(routing.locales, loc)) notFound();
+  const locale = loc as AppLocale;
+  setRequestLocale(locale);
+  const post = getBlogPostBySlug(slug, locale);
   if (!post) notFound();
 
-  const phoneUrl = "tel:" + SITE_CONFIG.phone.replace(/\s/g, "");
-  const rest = BLOG_POSTS.filter((p) => p.slug !== slug);
+  const site = getSiteConfig(locale);
+  const tNav = await getTranslations({ locale, namespace: "Nav" });
+  const tBlog = await getTranslations({ locale, namespace: "BlogPage" });
+  const tHome = await getTranslations({ locale, namespace: "HomePage" });
+  const tDetail = await getTranslations({ locale, namespace: "BlogDetail" });
+
+  const blogFaqs = [
+    { q: tDetail("faq0q"), a: tDetail("faq0a") },
+    { q: tDetail("faq1q"), a: tDetail("faq1a") },
+    { q: tDetail("faq2q"), a: tDetail("faq2a") },
+    { q: tDetail("faq3q"), a: tDetail("faq3a") },
+    { q: tDetail("faq4q"), a: tDetail("faq4a") },
+    { q: tDetail("faq5q"), a: tDetail("faq5a") },
+    { q: tDetail("faq6q"), a: tDetail("faq6a") },
+    { q: tDetail("faq7q"), a: tDetail("faq7a") },
+  ];
+
+  const phoneUrl = "tel:" + site.phone.replace(/\s/g, "");
+  const allPosts = getBlogPosts(locale);
+  const rest = allPosts.filter((p) => p.slug !== slug);
   const sameCategory = rest.filter((p) => p.category === post.category);
   const otherCategory = rest.filter((p) => p.category !== post.category);
   const otherPosts = [...sameCategory, ...otherCategory].slice(0, 5);
 
   const breadcrumbItems = [
-    { label: "Anasayfa", href: "/" },
-    { label: "Blog", href: "/blog" },
+    { label: tNav("home"), href: "/" as const },
+    { label: tBlog("breadcrumb"), href: "/blog" as const },
     { label: post.title },
   ];
-  const faqSchema = buildFAQPageSchema(BLOG_FAQS, `${post.title} – Sıkça Sorulan Sorular`);
+  const pageUrl = localizedUrl(`/blog/${slug}`, locale);
+  const faqSchema = buildFAQPageSchema(blogFaqs, `${post.title} – ${tDetail("faqTitleSuffix")}`);
   const articleSchema = buildArticleSchema({
     title: post.title,
     excerpt: post.excerpt,
@@ -74,8 +94,9 @@ export default async function BlogDetailPage({ params }: Props) {
     image: post.image,
     imageAlt: post.imageAlt,
     category: post.category,
+    pageUrl,
   });
-  const breadcrumbSchema = buildBreadcrumbSchema(breadcrumbItems);
+  const breadcrumbSchema = buildBreadcrumbSchema(breadcrumbItems, locale);
 
   return (
     <main className="main-inner">
@@ -85,19 +106,21 @@ export default async function BlogDetailPage({ params }: Props) {
       <div className="service-detail-layout">
         <aside className="service-detail-sidebar">
           <div className="service-detail-cta-card">
-            <h2 className="service-detail-sidebar-title">Randevu ve bilgi</h2>
-            <p>Bu konu veya diğer hizmetlerimiz hakkında sorularınız için bize ulaşabilirsiniz.</p>
+            <h2 className="service-detail-sidebar-title">{tDetail("sidebarTitle")}</h2>
+            <p>{tDetail("sidebarLead")}</p>
             <div className="service-detail-cta-card-links">
-              <a href={phoneUrl}>Hemen ara</a>
-              <a href={SITE_CONFIG.whatsapp} target="_blank" rel="noopener noreferrer">WhatsApp ile yaz</a>
+              <a href={phoneUrl}>{tDetail("callNow")}</a>
+              <a href={site.whatsapp} target="_blank" rel="noopener noreferrer">
+                {tDetail("whatsapp")}
+              </a>
             </div>
           </div>
-          <nav className="service-detail-other" aria-label="Diğer yazılar">
-            <h2 className="service-detail-other-title">Diğer yazılar</h2>
+          <nav className="service-detail-other" aria-label={tDetail("otherPostsAria")}>
+            <h2 className="service-detail-other-title">{tDetail("otherPosts")}</h2>
             <ul className="service-detail-other-list">
               {otherPosts.map((p) => (
                 <li key={p.slug}>
-                  <Link href={`/blog/${p.slug}`}>{p.title}</Link>
+                  <Link href={{ pathname: "/blog/[slug]", params: { slug: p.slug } }}>{p.title}</Link>
                 </li>
               ))}
             </ul>
@@ -134,9 +157,11 @@ export default async function BlogDetailPage({ params }: Props) {
         </article>
       </div>
       <section className="service-detail-sss" id="sss" aria-labelledby="sss-title">
-        <h2 id="sss-title" className="service-detail-sss-title">Sıkça Sorulan Sorular</h2>
+        <h2 id="sss-title" className="service-detail-sss-title">
+          {tBlog("faqTitle")}
+        </h2>
         <div className="service-detail-sss-list">
-          {BLOG_FAQS.map((item, i) => (
+          {blogFaqs.map((item, i) => (
             <details key={i} className="service-detail-sss-item">
               <summary className="service-detail-sss-q">{item.q}</summary>
               <p className="service-detail-sss-a">{item.a}</p>
@@ -146,11 +171,15 @@ export default async function BlogDetailPage({ params }: Props) {
       </section>
       <div className="cta-card">
         <div className="cta-card-inner">
-          <h2 className="cta-title">Randevu almak veya aklınıza takılanları sormak ister misiniz?</h2>
-          <p className="cta-desc">Varis, girişimsel radyoloji ve tanı işlemleriyle ilgili sorularınız için buradayız.</p>
+          <h2 className="cta-title">{tHome("ctaTitle")}</h2>
+          <p className="cta-desc">{tHome("ctaDesc")}</p>
           <div className="cta-buttons">
-            <a href={phoneUrl} className="btn btn-primary cta-btn">Hemen ara</a>
-            <a href={SITE_CONFIG.whatsapp} className="btn cta-btn cta-btn-outline" target="_blank" rel="noopener noreferrer">WhatsApp ile yaz</a>
+            <a href={phoneUrl} className="btn btn-primary cta-btn">
+              {tHome("ctaCall")}
+            </a>
+            <a href={site.whatsapp} className="btn cta-btn cta-btn-outline" target="_blank" rel="noopener noreferrer">
+              {tHome("ctaWhatsapp")}
+            </a>
           </div>
         </div>
         <div className="cta-card-image" aria-hidden="true">

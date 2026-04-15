@@ -1,33 +1,44 @@
 import { notFound } from "next/navigation";
-import Link from "next/link";
 import Image from "next/image";
+import { hasLocale } from "next-intl";
+import { getTranslations, setRequestLocale } from "next-intl/server";
+import { Link } from "@/i18n/navigation";
 import { Breadcrumb } from "@/components/Breadcrumb";
-import { getServiceBySlug, SERVICES, SERVICE_SLUGS } from "@/lib/content";
-import { SITE_CONFIG } from "@/lib/content";
-import { buildFAQPageSchema, buildServiceSchema, buildBreadcrumbSchema, getBaseUrl } from "@/lib/schema";
+import { SERVICE_SLUGS } from "@/lib/content";
+import { getServiceBySlug, getServices } from "@/lib/content-locale";
+import { getSiteConfig } from "@/lib/site-config";
+import { buildFAQPageSchema, buildServiceSchema, buildBreadcrumbSchema } from "@/lib/schema";
+import { routing } from "@/i18n/routing";
+import type { AppLocale } from "@/i18n/routing";
+import { localizedUrl, pageAlternates } from "@/lib/locale-path";
 
-type Props = { params: Promise<{ slug: string }> };
+type Props = { params: Promise<{ locale: string; slug: string }> };
 
-export async function generateStaticParams() {
-  return SERVICE_SLUGS.map((slug) => ({ slug }));
+export function generateStaticParams() {
+  return routing.locales.flatMap((locale) =>
+    SERVICE_SLUGS.map((slug) => ({ locale, slug })),
+  );
 }
 
 export async function generateMetadata({ params }: Props) {
-  const { slug } = await params;
-  const service = getServiceBySlug(slug);
+  const { slug, locale: loc } = await params;
+  if (!hasLocale(routing.locales, loc)) return { title: "Hizmet" };
+  const locale = loc as AppLocale;
+  const service = getServiceBySlug(slug, locale);
   if (!service) return { title: "Hizmet" };
-  const baseUrl = getBaseUrl();
-  const canonical = `${baseUrl}/hizmetler/${slug}`;
+  const canonical = localizedUrl(`/hizmetler/${slug}`, locale);
+  const ogLocale =
+    locale === "tr" ? "tr_TR" : locale === "en" ? "en_US" : locale === "ar" ? "ar_SA" : "ka_GE";
   return {
     title: service.title,
     description: service.excerpt,
-    alternates: { canonical },
+    alternates: pageAlternates(`/hizmetler/${slug}`, locale),
     openGraph: {
       title: service.title,
       description: service.excerpt,
       url: canonical,
       type: "website",
-      locale: "tr_TR",
+      locale: ogLocale,
     },
     twitter: { card: "summary_large_image", title: service.title, description: service.excerpt },
     robots: { index: true, follow: true },
@@ -73,23 +84,38 @@ function splitSubheading(paragraph: string): { heading: string; rest: string } |
 }
 
 export default async function ServiceDetailPage({ params }: Props) {
-  const { slug } = await params;
-  const service = getServiceBySlug(slug);
+  const { slug, locale: loc } = await params;
+  if (!hasLocale(routing.locales, loc)) notFound();
+  const locale = loc as AppLocale;
+  setRequestLocale(locale);
+  const service = getServiceBySlug(slug, locale);
   if (!service) notFound();
 
-  const phoneUrl = "tel:" + SITE_CONFIG.phone.replace(/\s/g, "");
-  const otherServices = SERVICES.filter((s) => s.slug !== slug);
+  const site = getSiteConfig(locale);
+  const tNav = await getTranslations({ locale, namespace: "Nav" });
+  const tSvc = await getTranslations({ locale, namespace: "ServicesPage" });
+  const tHome = await getTranslations({ locale, namespace: "HomePage" });
+  const tDetail = await getTranslations({ locale, namespace: "ServiceDetail" });
+
+  const phoneUrl = "tel:" + site.phone.replace(/\s/g, "");
+  const otherServices = getServices(locale).filter((s) => s.slug !== slug);
   const firstContentIndex = service.body.findIndex((p) => !splitSubheading(p));
   const faqList = [...(service.faq || []), ...GENERIC_FAQS].slice(0, 8);
 
   const breadcrumbItems = [
-    { label: "Anasayfa", href: "/" },
-    { label: "Hizmetlerimiz", href: "/hizmetler" },
+    { label: tNav("home"), href: "/" as const },
+    { label: tSvc("breadcrumb"), href: "/hizmetler" as const },
     { label: service.title },
   ];
-  const faqSchema = buildFAQPageSchema(faqList, `${service.title} – Sıkça Sorulan Sorular`);
-  const serviceSchema = buildServiceSchema({ title: service.title, excerpt: service.excerpt, slug });
-  const breadcrumbSchema = buildBreadcrumbSchema(breadcrumbItems);
+  const pageUrl = localizedUrl(`/hizmetler/${slug}`, locale);
+  const faqSchema = buildFAQPageSchema(faqList, `${service.title} – ${tDetail("faqTitleSuffix")}`);
+  const serviceSchema = buildServiceSchema({
+    title: service.title,
+    excerpt: service.excerpt,
+    slug,
+    url: pageUrl,
+  });
+  const breadcrumbSchema = buildBreadcrumbSchema(breadcrumbItems, locale);
 
   return (
     <main className="main-inner">
@@ -113,19 +139,21 @@ export default async function ServiceDetailPage({ params }: Props) {
       <div className="service-detail-layout">
         <aside className="service-detail-sidebar">
           <div className="service-detail-cta-card">
-            <h2 className="service-detail-sidebar-title">Randevu ve bilgi</h2>
-            <p>Bu hizmet hakkında sorularınız veya randevu talebiniz için bize ulaşabilirsiniz.</p>
+            <h2 className="service-detail-sidebar-title">{tDetail("sidebarTitle")}</h2>
+            <p>{tDetail("sidebarLead")}</p>
             <div className="service-detail-cta-card-links">
-              <a href={phoneUrl}>Hemen ara</a>
-              <a href={SITE_CONFIG.whatsapp} target="_blank" rel="noopener noreferrer">WhatsApp ile yaz</a>
+              <a href={phoneUrl}>{tDetail("callNow")}</a>
+              <a href={site.whatsapp} target="_blank" rel="noopener noreferrer">
+                {tDetail("whatsapp")}
+              </a>
             </div>
           </div>
-          <nav className="service-detail-other" aria-label="Diğer hizmetler">
-            <h2 className="service-detail-other-title">Diğer hizmetler</h2>
+          <nav className="service-detail-other" aria-label={tDetail("otherServicesAria")}>
+            <h2 className="service-detail-other-title">{tDetail("otherServices")}</h2>
             <ul className="service-detail-other-list">
               {otherServices.map((s) => (
                 <li key={s.slug}>
-                  <Link href={`/hizmetler/${s.slug}`}>{s.title}</Link>
+                  <Link href={{ pathname: "/hizmetler/[slug]", params: { slug: s.slug } }}>{s.title}</Link>
                 </li>
               ))}
             </ul>
@@ -158,7 +186,9 @@ export default async function ServiceDetailPage({ params }: Props) {
         </article>
       </div>
       <section className="service-detail-sss" id="sss" aria-labelledby="sss-title">
-        <h2 id="sss-title" className="service-detail-sss-title">Sıkça Sorulan Sorular</h2>
+        <h2 id="sss-title" className="service-detail-sss-title">
+          {tDetail("faqTitle")}
+        </h2>
         <div className="service-detail-sss-list">
           {faqList.map((item, i) => (
             <details key={i} className="service-detail-sss-item">
@@ -170,11 +200,15 @@ export default async function ServiceDetailPage({ params }: Props) {
       </section>
       <div className="cta-card">
         <div className="cta-card-inner">
-          <h2 className="cta-title">Randevu almak veya aklınıza takılanları sormak ister misiniz?</h2>
-          <p className="cta-desc">Varis, girişimsel radyoloji ve tanı işlemleriyle ilgili sorularınız için buradayız.</p>
+          <h2 className="cta-title">{tHome("ctaTitle")}</h2>
+          <p className="cta-desc">{tHome("ctaDesc")}</p>
           <div className="cta-buttons">
-            <a href={phoneUrl} className="btn btn-primary cta-btn">Hemen ara</a>
-            <a href={SITE_CONFIG.whatsapp} className="btn cta-btn cta-btn-outline" target="_blank" rel="noopener noreferrer">WhatsApp ile yaz</a>
+            <a href={phoneUrl} className="btn btn-primary cta-btn">
+              {tHome("ctaCall")}
+            </a>
+            <a href={site.whatsapp} className="btn cta-btn cta-btn-outline" target="_blank" rel="noopener noreferrer">
+              {tHome("ctaWhatsapp")}
+            </a>
           </div>
         </div>
         <div className="cta-card-image" aria-hidden="true">

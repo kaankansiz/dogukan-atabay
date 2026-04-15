@@ -3,3 +3,198 @@
 body {
   font-family: var(--font-outfit), "Outfit", sans-serif;
 }
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* —— Locale switcher (custom dropdown) —— */
+.locale-switcher {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.locale-switcher-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.55rem 0.35rem 0.45rem;
+  margin: 0;
+  font: inherit;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--dark-text, #1a1a2e);
+  background: linear-gradient(180deg, #fff 0%, #f4f7fb 100%);
+  border: 1px solid color-mix(in srgb, var(--primary-blue, #1e6bb8) 12%, #c8d4e4);
+  border-radius: 999px;
+  box-shadow:
+    0 1px 2px rgba(15, 40, 80, 0.06),
+    0 0 0 1px rgba(255, 255, 255, 0.8) inset;
+  cursor: pointer;
+  transition:
+    box-shadow 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.15s ease;
+}
+
+.locale-switcher-trigger:hover {
+  border-color: color-mix(in srgb, var(--primary-blue, #1e6bb8) 28%, #a8bdd4);
+  box-shadow:
+    0 4px 14px rgba(20, 60, 120, 0.1),
+    0 0 0 1px rgba(255, 255, 255, 0.9) inset;
+}
+
+.locale-switcher-trigger:focus-visible {
+  outline: none;
+  border-color: var(--primary-blue, #1e6bb8);
+  box-shadow:
+    0 0 0 3px color-mix(in srgb, var(--primary-blue, #1e6bb8) 22%, transparent),
+    0 2px 8px rgba(20, 60, 120, 0.08);
+}
+
+.locale-switcher-globe {
+  flex-shrink: 0;
+  color: var(--primary-blue, #1e6bb8);
+  opacity: 0.92;
+}
+
+.locale-switcher-flag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.125rem;
+  line-height: 1;
+}
+
+.locale-switcher-chevron {
+  flex-shrink: 0;
+  opacity: 0.55;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.locale-switcher-chevron--open {
+  transform: rotate(180deg);
+  opacity: 0.85;
+}
+
+.locale-switcher-panel {
+  min-width: min(188px, calc(100vw - 2rem));
+  max-width: calc(100vw - 1.25rem);
+  padding: 0.28rem;
+  background: #fff;
+  border: 1px solid rgba(15, 40, 80, 0.08);
+  border-radius: 14px;
+  box-shadow:
+    0 4px 6px -1px rgba(15, 40, 80, 0.06),
+    0 16px 40px -12px rgba(15, 50, 100, 0.18);
+  animation: locale-panel-in 0.18s ease-out;
+}
+
+@keyframes locale-panel-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .locale-switcher-panel {
+    animation: none;
+  }
+
+  .locale-switcher-trigger,
+  .locale-switcher-chevron {
+    transition: none;
+  }
+}
+
+.locale-switcher-option {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  width: 100%;
+  padding: 0.4rem 0.45rem;
+  margin: 0;
+  font: inherit;
+  font-size: 0.8125rem;
+  text-align: start;
+  color: var(--dark-text, #1a1a2e);
+  background: transparent;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.locale-switcher-option:hover,
+.locale-switcher-option:focus-visible {
+  outline: none;
+  background: color-mix(in srgb, var(--primary-blue, #1e6bb8) 7%, transparent);
+}
+
+.locale-switcher-option--active {
+  background: color-mix(in srgb, var(--primary-blue, #1e6bb8) 10%, transparent);
+  font-weight: 600;
+}
+
+.locale-switcher-option-badge {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.625rem;
+  height: 1.3125rem;
+  font-size: 1.125rem;
+  line-height: 1;
+  background: rgba(15, 40, 80, 0.05);
+  border-radius: 6px;
+  border: 1px solid rgba(15, 40, 80, 0.06);
+}
+
+.locale-switcher-option-label {
+  flex: 1;
+  min-width: 0;
+  line-height: 1.35;
+}
+
+.locale-switcher-check {
+  flex-shrink: 0;
+  color: var(--primary-blue, #1e6bb8);
+  display: flex;
+  align-items: center;
+}
+
+[dir="rtl"] .locale-switcher-panel {
+  text-align: start;
+}
+
+.nav-locale-slot {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+@media (max-width: 1100px) {
+  .nav-locale-slot {
+    width: 100%;
+    justify-content: flex-start;
+    padding: 0 0 12px;
+    margin-bottom: 8px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  }
+}

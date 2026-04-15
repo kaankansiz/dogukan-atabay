@@ -1,32 +1,45 @@
 import { MetadataRoute } from "next";
-import { getBaseUrl } from "@/lib/schema";
-import { SERVICE_SLUGS } from "@/lib/content";
-import { BLOG_SLUGS } from "@/lib/content";
+import { SERVICE_SLUGS, BLOG_SLUGS } from "@/lib/content";
+import { routing } from "@/i18n/routing";
+import type { AppLocale } from "@/i18n/routing";
+import { localizedUrl } from "@/lib/locale-path";
+
+const STATIC_PATHS = ["/", "/hakkimizda", "/hizmetler", "/blog", "/iletisim"];
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const base = getBaseUrl();
+  const out: MetadataRoute.Sitemap = [];
+  const lastModified = new Date();
 
-  const staticPages: MetadataRoute.Sitemap = [
-    { url: base, lastModified: new Date(), changeFrequency: "weekly", priority: 1 },
-    { url: `${base}/hakkimizda`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.8 },
-    { url: `${base}/hizmetler`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.9 },
-    { url: `${base}/blog`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.8 },
-    { url: `${base}/iletisim`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.8 },
-  ];
+  for (const locale of routing.locales) {
+    const loc = locale as AppLocale;
 
-  const servicePages: MetadataRoute.Sitemap = SERVICE_SLUGS.map((slug) => ({
-    url: `${base}/hizmetler/${slug}`,
-    lastModified: new Date(),
-    changeFrequency: "monthly" as const,
-    priority: 0.8,
-  }));
+    for (const path of STATIC_PATHS) {
+      out.push({
+        url: localizedUrl(path, loc),
+        lastModified,
+        changeFrequency: path === "/" ? "weekly" : "monthly",
+        priority: path === "/" ? 1 : 0.8,
+      });
+    }
 
-  const blogPages: MetadataRoute.Sitemap = BLOG_SLUGS.map((slug) => ({
-    url: `${base}/blog/${slug}`,
-    lastModified: new Date(),
-    changeFrequency: "monthly" as const,
-    priority: 0.7,
-  }));
+    for (const slug of SERVICE_SLUGS) {
+      out.push({
+        url: localizedUrl(`/hizmetler/${slug}`, loc),
+        lastModified,
+        changeFrequency: "monthly",
+        priority: 0.8,
+      });
+    }
 
-  return [...staticPages, ...servicePages, ...blogPages];
+    for (const slug of BLOG_SLUGS) {
+      out.push({
+        url: localizedUrl(`/blog/${slug}`, loc),
+        lastModified,
+        changeFrequency: "monthly",
+        priority: 0.7,
+      });
+    }
+  }
+
+  return out;
 }

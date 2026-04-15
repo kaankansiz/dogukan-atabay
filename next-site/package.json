@@ -6,13 +6,16 @@
     "dev": "next dev",
     "build": "prisma generate && next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "generate-blog-overrides": "tsx scripts/generate-blog-overrides.ts",
+    "generate-patient-reviews": "node scripts/generate-patient-reviews.mjs"
   },
   "dependencies": {
     "@prisma/adapter-better-sqlite3": "^7.4.2",
     "@prisma/client": "^7.4.2",
     "better-sqlite3": "^12.6.2",
     "next": "16.1.6",
+    "next-intl": "^4.9.1",
     "prisma": "^7.4.2",
     "react": "19.2.3",
     "react-dom": "19.2.3",
@@ -27,6 +30,8 @@
     "eslint": "^9",
     "eslint-config-next": "16.1.6",
     "tailwindcss": "^4",
+    "translate": "^2.0.2",
+    "tsx": "^4.21.0",
     "typescript": "^5"
   }
 }
