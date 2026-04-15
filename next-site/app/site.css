@@ -68,6 +68,8 @@ video {
     position: relative;
     height: 60px;
     min-width: 0;
+    /* Keep navigation from sliding under the left logo tab. */
+    padding-left: 340px;
 }
 
 .logo-tab-container {
@@ -151,12 +153,15 @@ video {
     display: flex;
     align-items: center;
     gap: 48px;
+    min-width: 0;
+    max-width: 100%;
 }
 
 .nav-links {
     display: flex;
     align-items: center;
     gap: 32px;
+    flex-wrap: nowrap;
 }
 
 .nav-links a {
@@ -182,6 +187,29 @@ video {
 
 .nav-links .nav-cta:hover {
     color: #fff;
+}
+
+@media (max-width: 1280px) and (min-width: 1101px) {
+    .header {
+        padding-left: 300px;
+    }
+
+    .nav-container {
+        gap: 28px;
+    }
+
+    .nav-links {
+        gap: 20px;
+    }
+
+    .nav-links a {
+        font-size: 14px;
+    }
+
+    .nav-links .nav-cta {
+        padding: 8px 14px;
+        font-size: 12px;
+    }
 }
 
 /* Hamburger – sadece tablet/mobilde görünür */
@@ -258,6 +286,7 @@ video {
         justify-content: space-between;
         align-items: center;
         padding-right: 0;
+        padding-left: 0;
         overflow: visible;
         min-height: 56px;
         gap: 16px;
